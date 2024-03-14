@@ -1,6 +1,6 @@
 canvas {
     position: fixed;
-    background: url("/asset/background.png") repeat 0 0;
+    background: url("/assets/background-1.png") repeat 0 0;
     width: 840px;
     height: 650px;
     animation: road 5s linear infinite;

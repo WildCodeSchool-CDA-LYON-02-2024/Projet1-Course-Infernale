@@ -24,13 +24,13 @@ class GameEngine {
         this.ctx = this.canvas.getContext('2d')
         this.canvas.width = 840
         this.canvas.height = 650
-        this.player = new Obstacle('asset/blue-car-top-50.png', 600, 50)
+        this.player = new Obstacle('assets/blue-car-top-50.png', 600, 50)
     }
 
     init() {
         this.initEvent()
         this.items = [
-            new Obstacle('asset/blue-car-top.png',  300, 500),
+            new Obstacle('assets/blue-car-top-50.png',  300, 500),
         ]
     }
 
