@@ -24,13 +24,20 @@ class GameEngine {
         this.ctx = this.canvas.getContext('2d')
         this.canvas.width = 840
         this.canvas.height = 650
-        this.player = new Obstacle('assets/car.png', 600, 50)
+        this.player = new Obstacle('assets/moto.png', 500, 800)
     }
 
     init() {
         this.initEvent()
         this.items = [
             new Obstacle('assets/car.png',  200, 100),
+            new Obstacle('assets/car.png',  600, -500),
+            new Obstacle('assets/car.png',  800, -1000),
+            new Obstacle('assets/car.png',  500,-1100),
+            new Obstacle('assets/car.png',  600, -1600),
+            new Obstacle('assets/car.png',  400, -2200),
+            new Obstacle('assets/car.png',  800, -3200),
+            new Obstacle('assets/car.png',  500, -3800),
         ]
     }
 
@@ -85,7 +92,7 @@ class GameEngine {
         if (this.keys.up) {
             this.player.y -= this.speed
         }
-        if (this.keys.left) {
+        if (this.keys.left ) {
             this.player.x -= this.speed
         }
         if (this.keys.right) {
@@ -130,6 +137,13 @@ class GameEngine {
         }
     }
 
+    obstacleMovement(){
+        for (let item of this.items)
+        {
+            item.y += 10
+        }
+    }
+
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         for (let item of this.items)
@@ -140,6 +154,7 @@ class GameEngine {
     }
 
     gameLoop() {
+        this.obstacleMovement()
         this.update()
         this.draw()
         window.requestAnimationFrame(() => {
