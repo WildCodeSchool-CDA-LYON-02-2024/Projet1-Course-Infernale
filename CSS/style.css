@@ -1,13 +1,14 @@
 canvas {
     position: fixed;
-    background: url("/assets/background-1.png") repeat 0 0;
-    width: 840px;
-    height: 650px;
+    background: url("/assets/background.svg") repeat 0 0;
+    width: 1200px;
+    height: 900px;
     animation: road 5s linear infinite;
+    box-sizing:border-box;
 }
 
 @keyframes road {
     from { background-position: 0 0 }
-    to {  background-position: 0 650px }
+    to {  background-position: 0 900px }
 
 }
