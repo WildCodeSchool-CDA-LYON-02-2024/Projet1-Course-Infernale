@@ -17,7 +17,7 @@ class GameEngine {
         space: false
     };
 
-    speed = 5
+    speed = 7
 
     constructor() {
         this.canvas = document.getElementById('game')
@@ -31,13 +31,21 @@ class GameEngine {
         this.initEvent()
         this.items = [
             new Obstacle('assets/car.png',  200, 100),
-            new Obstacle('assets/car.png',  600, -500),
-            new Obstacle('assets/car.png',  800, -1000),
-            new Obstacle('assets/car.png',  500,-1100),
-            new Obstacle('assets/car.png',  600, -1600),
-            new Obstacle('assets/car.png',  400, -2200),
-            new Obstacle('assets/car.png',  800, -3200),
-            new Obstacle('assets/car.png',  500, -3800),
+            new Obstacle('assets/car.png',  500, -500),
+            new Obstacle('assets/car.png',  300, -1000),
+            new Obstacle('assets/car.png',  500,-1400),
+            new Obstacle('assets/car.png',  200, -1900),
+            new Obstacle('assets/car.png',  500, -2500),
+            new Obstacle('assets/car.png',  400, -2900),
+            new Obstacle('assets/car.png',  200, -3500),
+            new Obstacle('assets/car.png',  400, -4100),
+            new Obstacle('assets/car.png',  500, -4600),
+            new Obstacle('assets/car.png',  300, -5100),
+            new Obstacle('assets/car.png',  400,-5400),
+            new Obstacle('assets/car.png',  600, -5800),
+            new Obstacle('assets/car.png',  400, -6300),
+            new Obstacle('assets/car.png',  200, -7000),
+            new Obstacle('assets/car.png',  500, -7200),
         ]
     }
 
