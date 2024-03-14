@@ -160,14 +160,20 @@ class GameEngine {
         }
         this.ctx.drawImage(this.player.getImg(), this.player.x, this.player.y)
     }
-
+    endGame(){
+        if (this.collisionItem()) {
+            !this.gameLoop()
+        }
+    }
     gameLoop() {
         this.obstacleMovement()
         this.update()
         this.draw()
         window.requestAnimationFrame(() => {
             this.gameLoop()
+            this.endGame()
         })
+        this.endGame()
     }
 
     run() {
