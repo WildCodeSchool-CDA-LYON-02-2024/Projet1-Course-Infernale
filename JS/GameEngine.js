@@ -148,6 +148,9 @@ class GameEngine {
     obstacleMovement(){
         for (let item of this.items)
         {
+            if (this.endGame()){
+                item.y
+            }
             item.y += 10
         }
     }
@@ -162,7 +165,8 @@ class GameEngine {
     }
     endGame(){
         if (this.collisionItem()) {
-            !this.gameLoop()
+            this.speed = 0
+            this.obstacleMovement()
         }
     }
     gameLoop() {
@@ -173,7 +177,6 @@ class GameEngine {
             this.gameLoop()
             this.endGame()
         })
-        this.endGame()
     }
 
     run() {
