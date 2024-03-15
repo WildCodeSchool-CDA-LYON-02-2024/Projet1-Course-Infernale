@@ -19,13 +19,13 @@ class GameEngine {
         this.canvas.height = 650
         this.player = new Obstacle('assets/moto.png', 500, 800)
         this.controls = new Controls();
+        this.countItems = 0
     }
 
     init() {
-  
         this.items = [
-            new Obstacle('assets/car.png',  this.randomX(200,600), this.randomY(0,-200)),
-            // new Obstacle('assets/car.png',  500, -500),
+            new Obstacle('assets/car.png',  this.randomX(250,550), this.randomY(0,-200)),
+            new Obstacle('assets/car.png',  500, -500),
             // new Obstacle('assets/car.png',  300, -1000),
             // new Obstacle('assets/car.png',  500,-1400),
             // new Obstacle('assets/car.png',  200, -1900),
@@ -100,13 +100,15 @@ class GameEngine {
     }
 
     obstacleMovement(){
+        this.items = this.items.filter(item => item.y < this.canvas.height)
+        //TODO IF COLLISION    THEN GAME OVER 
         for (let item of this.items)
         {
+            //    console.log(item.y, 'Y', this.canvas.height, 'MAX Y ');
             // if (this.endGame()){
             //     item.y
             // }
-            item.y += 10
-            
+            item.y += 5
         }
     }
 randomX(min, max){
@@ -116,44 +118,53 @@ randomX(min, max){
 randomY(min, max){
     return Math.random() * (max - min) + min;
 }
-    draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-        for (let item of this.items)
-        {
-            this.ctx.drawImage(item.getImg(), item.x, item.y)
-        }
-        this.ctx.drawImage(this.player.getImg(), this.player.x, this.player.y)
-    }
-    endGame(){
-        if (this.collisionItem()) {
-            this.speed = 0
-            this.obstacleMovement()
-        }
-    }
-    gameLoop() {
-        this.items
-        this.obstacleMovement()
-        this.update()
-        this.draw()
-        window.requestAnimationFrame(() => {
-            this.gameLoop()
-            // this.endGame()
-        })
-    }
 
-    run() {
-        this.init()
-        let count = 0
-        for (let item of this.items)
-        {
-            item.loaded(() => {
-                console.log(item)
-                if (++count === this.items.length) {
-                    this.gameLoop()
-                }
-            })
-        }
+draw() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    for (let item of this.items)
+    {
+        this.ctx.drawImage(item.getImg(), item.x, item.y)
     }
+    this.ctx.drawImage(this.player.getImg(), this.player.x, this.player.y)
+}
+endGame(){
+    if (this.collisionItem()) {
+        this.speed = 0
+        this.obstacleMovement()
+    }
+}
+gameLoop() {
+    //this.items
+    if (this.items.length === 1) {
+        this.items.push(new Obstacle('assets/car.png',  this.randomX(250,350), this.randomY(0,-200)))
+        this.items.push(new Obstacle('assets/car.png',  this.randomX(350,550), this.randomY(0,-500)))
+        this.items.push(new Obstacle('assets/car.png',  this.randomX(250,350), this.randomY(0,-600)))
+    }
+    this.obstacleMovement()
+    this.update()
+    this.draw()
+    window.requestAnimationFrame(() => {
+        this.gameLoop()
+        // this.endGame()
+    })
+}
+
+run() {
+    this.init();
+    let count = 0;
+    for (let item of this.items) {
+        item.loaded(() => {
+            count++;
+            this.countItems += 1
+            if (count === this.items.length) {
+                this.gameLoop(); 
+            }
+            
+        });
+        console.log(this.countItems);
+
+    }
+}
 }
 
 export { GameEngine }
