@@ -1,0 +1,24 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  flex-direction: column;
+}
+
+#game {
+  width: 15em;
+  height: 50em;
+  background: url("/image/highway.png") repeat 0, 0;
+  background-size: contain;
+  animation: road 3s linear infinite;
+}
+
+@keyframes road {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 100vh;
+  }
+}
