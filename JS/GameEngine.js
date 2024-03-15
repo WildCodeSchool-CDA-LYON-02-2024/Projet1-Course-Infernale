@@ -1,5 +1,5 @@
 import {Obstacle} from "./Obstacle.js"
-
+import { Controls } from "./Controls.js";
 
 
 class GameEngine {
@@ -10,14 +10,6 @@ class GameEngine {
     player= null
 
 
-    keys = {
-        up: false,
-        down: false,
-        left: false,
-        right: false,
-        space: false
-    };
-
     speed = 7
 
     constructor() {
@@ -26,10 +18,11 @@ class GameEngine {
         this.canvas.width = 840
         this.canvas.height = 650
         this.player = new Obstacle('assets/moto.png', 500, 800)
+        this.controls = new Controls();
     }
 
     init() {
-        this.initEvent()
+  
         this.items = [
             new Obstacle('assets/car.png',  this.randomX(200,600), this.randomY(0,-200)),
             // new Obstacle('assets/car.png',  500, -500),
@@ -50,69 +43,29 @@ class GameEngine {
         ]
     }
 
-    initEvent() {
-        window.addEventListener('keydown', (event) => {
-            switch (event.key) {
-                case 'ArrowUp':
-                    this.keys.up = true;
-                    break;
-                case 'ArrowDown':
-                    this.keys.down = true;
-                    break;
-                case 'ArrowLeft':
-                    this.keys.left = true;
-                    break;
-                case 'ArrowRight':
-                    this.keys.right = true;
-                    break;
-                case ' ':
-                    break;
-            }
-        });
-
-        window.addEventListener('keyup', (event) => {
-            switch (event.key) {
-                case 'ArrowUp':
-                    this.keys.up = false;
-                    break;
-                case 'ArrowDown':
-                    this.keys.down = false;
-                    break;
-                case 'ArrowLeft':
-                    this.keys.left = false;
-                    break;
-                case 'ArrowRight':
-                    this.keys.right = false;
-                    break;
-                case ' ':
-                    break;
-            }
-        });
-    }
 
     update() {
 
         let prevX = this.player.x
         let prevY = this.player.y
 
-        if (this.keys.down) {
-            this.player.y += this.speed
-        }
-        if (this.keys.up) {
-            this.player.y -= this.speed
-        }
-        if (this.keys.left ) {
-            this.player.x -= this.speed
-        }
-        if (this.keys.right) {
-            this.player.x += this.speed
-        }
+        if (this.controls.forward) {
+            this.player.y -= this.speed;
+          }
+          if (this.controls.reverse) {
+            this.player.y += this.speed;
+          }
+          if (this.controls.left) {
+            this.player.x -= this.speed;
+          }
+          if (this.controls.right) {
+            this.player.x += this.speed;
 
         if (this.collisionItem()) {
             this.player.x = prevX
             this.player.y = prevY
         }
-
+    }
         this.collisionBorder()
     }
 
