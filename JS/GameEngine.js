@@ -9,6 +9,7 @@ class GameEngine {
     items = []
     player= null
 
+
     keys = {
         up: false,
         down: false,
@@ -30,22 +31,22 @@ class GameEngine {
     init() {
         this.initEvent()
         this.items = [
-            new Obstacle('assets/car.png',  200, 100),
-            new Obstacle('assets/car.png',  500, -500),
-            new Obstacle('assets/car.png',  300, -1000),
-            new Obstacle('assets/car.png',  500,-1400),
-            new Obstacle('assets/car.png',  200, -1900),
-            new Obstacle('assets/car.png',  500, -2500),
-            new Obstacle('assets/car.png',  400, -2900),
-            new Obstacle('assets/car.png',  200, -3500),
-            new Obstacle('assets/car.png',  400, -4100),
-            new Obstacle('assets/car.png',  500, -4600),
-            new Obstacle('assets/car.png',  300, -5100),
-            new Obstacle('assets/car.png',  400,-5400),
-            new Obstacle('assets/car.png',  600, -5800),
-            new Obstacle('assets/car.png',  400, -6300),
-            new Obstacle('assets/car.png',  200, -7000),
-            new Obstacle('assets/car.png',  500, -7200),
+            new Obstacle('assets/car.png',  this.randomX(200,600), this.randomY(0,-200)),
+            // new Obstacle('assets/car.png',  500, -500),
+            // new Obstacle('assets/car.png',  300, -1000),
+            // new Obstacle('assets/car.png',  500,-1400),
+            // new Obstacle('assets/car.png',  200, -1900),
+            // new Obstacle('assets/car.png',  500, -2500),
+            // new Obstacle('assets/car.png',  400, -2900),
+            // new Obstacle('assets/car.png',  200, -3500),
+            // new Obstacle('assets/car.png',  400, -4100),
+            // new Obstacle('assets/car.png',  500, -4600),
+            // new Obstacle('assets/car.png',  300, -5100),
+            // new Obstacle('assets/car.png',  400,-5400),
+            // new Obstacle('assets/car.png',  600, -5800),
+            // new Obstacle('assets/car.png',  400, -6300),
+            // new Obstacle('assets/car.png',  200, -7000),
+            // new Obstacle('assets/car.png',  500, -7200),
         ]
     }
 
@@ -148,10 +149,20 @@ class GameEngine {
     obstacleMovement(){
         for (let item of this.items)
         {
+            // if (this.endGame()){
+            //     item.y
+            // }
             item.y += 10
+            
         }
     }
+randomX(min, max){
+    return Math.random() * (max - min) + min;
+}
 
+randomY(min, max){
+    return Math.random() * (max - min) + min;
+}
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         for (let item of this.items)
@@ -160,13 +171,20 @@ class GameEngine {
         }
         this.ctx.drawImage(this.player.getImg(), this.player.x, this.player.y)
     }
-
+    endGame(){
+        if (this.collisionItem()) {
+            this.speed = 0
+            this.obstacleMovement()
+        }
+    }
     gameLoop() {
+        this.items
         this.obstacleMovement()
         this.update()
         this.draw()
         window.requestAnimationFrame(() => {
             this.gameLoop()
+            // this.endGame()
         })
     }
 
