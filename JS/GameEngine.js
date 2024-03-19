@@ -25,6 +25,8 @@ class GameEngine {
     this.controls = new Controls();
     this.countItems = 0;
     this.obstacleSpeed = 2;
+    this.level = document.getElementById("niveau")
+    this.currentLevel = 1;
   }
   randomX(min, max) {
     return Math.random() * (max - min) + min;
@@ -129,6 +131,10 @@ class GameEngine {
     return false;
   }
 
+  levelUp(){
+    this.level.innerText = `Niveau ${this.currentLevel}`
+  }
+
   collisionBorder() {
     if (this.player.x < 0) {
       this.player.x = 0;
@@ -152,8 +158,9 @@ class GameEngine {
       item.y += this.obstacleSpeed;
     }
 
-    if (this.countItems > 10) {
+    if (this.countItems > 2) {
       this.obstacleSpeed += 1;
+      this.currentLevel +=1;
       this.countItems = 0;
     }
 
@@ -188,7 +195,7 @@ class GameEngine {
         )
       );
     }
-
+    this.levelUp()
     this.obstacleMovement();
 
     this.update();
