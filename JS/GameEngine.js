@@ -158,7 +158,7 @@ class GameEngine {
       item.y += this.obstacleSpeed;
     }
 
-    if (this.countItems > 2) {
+    if (this.countItems > 5) {
       this.obstacleSpeed += 1;
       this.currentLevel +=1;
       this.countItems = 0;
