@@ -15,7 +15,7 @@ class GameEngine {
     space: false,
   };
   speed = 7;
-
+  score = 0;
   constructor() {
     this.canvas = document.getElementById("game");
     this.ctx = this.canvas.getContext("2d");
@@ -110,6 +110,9 @@ class GameEngine {
       this.player.y = prevY;
     }
 
+    if (!this.collisionItem()) {
+      this.score += 1; // Augmentez le score d'une unité (vous pouvez ajuster cela selon vos besoins)
+    }
     this.collisionBorder();
   }
 
@@ -160,6 +163,10 @@ class GameEngine {
       this.ctx.drawImage(item.getImg(), item.x, item.y);
     }
     this.ctx.drawImage(this.player.getImg(), this.player.x, this.player.y);
+    
+    this.ctx.font = "20px Arial";
+    this.ctx.fillStyle = "white";
+    this.ctx.fillText("Score: " + this.score, 10, 30);
   }
   // endGame(){
   //     if (this.collisionItem()) {
@@ -176,10 +183,10 @@ class GameEngine {
           this.randomY(-200, -400)
         ),
         new Obstacle(
-            "assets/car.png",
-            this.randomX(300, 550),
-            this.randomY(-500, -800)
-          )
+          "assets/car.png",
+          this.randomX(300, 550),
+          this.randomY(-500, -800)
+        )
       );
     }
     this.obstacleMovement();
