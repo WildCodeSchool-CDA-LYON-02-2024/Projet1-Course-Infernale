@@ -21,7 +21,7 @@ class GameEngine {
     this.ctx = this.canvas.getContext("2d");
     this.canvas.width = 840;
     this.canvas.height = 650;
-    this.player = new Obstacle("assets/moto.png", 500, 800);
+    this.player = new Obstacle(500, 800, "assets/moto.png");
     this.controls = new Controls();
     this.countItems = 0;
     this.obstacleSpeed = 3; // vitesse de base des obstacles
@@ -39,14 +39,13 @@ class GameEngine {
 
     this.items = [
       new Obstacle(
-        "assets/car.png",
         this.randomX(250, 350),
-        this.randomY(0, -200)
+        this.randomY(0, -200), "assets/car.png"
       ),
       new Obstacle(
-        "assets/car.png",
         this.randomX(250, 550),
-        this.randomY(0, -1000)
+        this.randomY(0, -1000), 
+        "assets/car.png"
       ),
     ];
   }
@@ -135,18 +134,18 @@ class GameEngine {
 
   collisionBorder() {
     if (this.player.x < 0) {
-      this.player.x = 0;
+        this.player.x = 0
     }
     if (this.player.y < 0) {
-      this.player.y = 0;
+        this.player.y= 0
     }
-    if (this.player.x + this.player.img.width > this.canvas.width) {
-      this.player.x = this.canvas.width - this.player.img.width;
+    if (this.player.x + this.player.getImg().width > this.canvas.width) {
+        this.player.x = this.canvas.width - this.player.getImg().width
     }
-    if (this.player.y + this.player.img.height > this.canvas.height) {
-      this.player.y = this.canvas.height - this.player.img.height;
+    if (this.player.y + this.player.getImg().height > this.canvas.height) {
+        this.player.y = this.canvas.height - this.player.getImg().height
     }
-  }
+}
 
   obstacleMovement() {
     this.items = this.items.filter((item) => item.y < this.canvas.height);
@@ -167,7 +166,7 @@ class GameEngine {
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     for (let item of this.items) {
-      this.ctx.drawImage(item.getImg(), item.x, item.y);
+      this.ctx.drawImage(item.getImg(),item.x, item.y);
     }
     this.ctx.drawImage(this.player.getImg(), this.player.x, this.player.y);
     
@@ -187,14 +186,14 @@ class GameEngine {
       this.countItems += 2;
       this.items.push(
         new Obstacle(
-          "assets/car.png",
           this.randomX(250, 350),
-          this.randomY(-200, -400)
+          this.randomY(-200, -400),
+          "assets/car.png"
         ),
         new Obstacle(
-          "assets/car.png",
           this.randomX(300, 550),
-          this.randomY(-500, -800)
+          this.randomY(-500, -800),
+          "assets/car.png"
         )
       );
     }
