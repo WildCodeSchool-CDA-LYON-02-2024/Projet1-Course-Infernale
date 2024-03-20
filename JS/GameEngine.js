@@ -18,6 +18,7 @@ class GameEngine {
     space: false,
   };
   speed = 7;
+  maxSpeed = 20;
   score = 0;
   constructor() {
     this.canvas = document.getElementById("game");
@@ -53,7 +54,7 @@ class GameEngine {
         this.randomX(250, 550),
         this.randomY(0, -1000),
         "assets/car.png"
-      )
+      ),
     ];
     this.bonus = [new Bonus(this.randomX(250, 550), this.randomY(-500, -2000))];
   }
@@ -125,12 +126,7 @@ class GameEngine {
     }
     this.collisionBorder();
 
-    this.collisionBonus()
-    // if (this.collisionBonus()) {
-    //   this.speed += 1
-
-    // }
-    // console.log(this.speed)
+    this.collisionBonus();
   }
 
   collisionItem() {
@@ -146,17 +142,36 @@ class GameEngine {
     }
     return false;
   }
+  getMalus() {
+    this.speed -= 1;
+  }
+
+  getBonus() {
+    this.speed += 1;
+  }
+
+  randomBonus(min, max) {
+    return Math.random() * (max - min) + min;
+  }
 
   collisionBonus() {
     for (let bonus of this.bonus) {
       if (collision(bonus, this.player)) {
         bonus.onImpact = true;
-        this.speed += 1
-        this.countspeed += 1
+        const randomNum = this.randomBonus(1, 5);
+        if (randomNum > 4) {
+          this.getMalus();
+          this.countspeed -= 1;
+        } else {
+          this.getBonus();
+          this.countspeed += 1;
+        }
+        
+        console.log(this.speed);
       }
     }
-    console.log(this.speed)
   }
+ 
 
   collisionBorder() {
     if (this.player.x < 0) {
@@ -175,7 +190,9 @@ class GameEngine {
 
   obstacleMovement() {
     this.items = this.items.filter((item) => item.y < this.canvas.height);
-    this.bonus = this.bonus.filter((bonus) => bonus.y < this.canvas.height && !bonus.onImpact);
+    this.bonus = this.bonus.filter(
+      (bonus) => bonus.y < this.canvas.height && !bonus.onImpact
+    );
 
     //TODO IF COLLISION    THEN GAME OVER
     for (let item of this.items) {
@@ -191,7 +208,10 @@ class GameEngine {
       this.countItems = 0;
     }
 
-
+    if (this.obstacleSpeed > 20) {
+      this.obstacleSpeed = this.maxSpeed;
+    }
+    console.log(this.obstacleSpeed);
   }
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -207,7 +227,7 @@ class GameEngine {
     this.ctx.fillStyle = "red";
     this.ctx.fillText("Score: " + this.score, 20, 30); //affichage du score sur l'écran
     this.ctx.fillText("Niveau: " + this.currentLevel, 700, 30); //affichage du niveau sur l'écran
-    this.ctx.fillText("Vitesse: " + this.countspeed, 700, 50); //affichage 
+    this.ctx.fillText("Vitesse: " + this.countspeed, 700, 50); //affichage
   }
   // endGame(){
   //     if (this.collisionItem()) {
