@@ -1,10 +1,19 @@
+body{
+    display: flex;
+    
+}
 canvas {
-    position: fixed;
+
     background: url("/assets/background.svg") repeat 0 0;
     width: 1200px;
     height: 900px;
     animation: road 5s linear infinite;
     box-sizing:border-box;
+}
+
+#niveau{
+font-size: 2rem;
+font-weight: bold;
 }
 
 @keyframes road {
