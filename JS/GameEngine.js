@@ -33,6 +33,8 @@ class GameEngine {
     this.bonusSpeed = 4; // vitesse de base des obstacles
     this.countspeed = 1;
     this.currentLevel = 1;
+    this.maxLeft = 230;
+    this.maxRight = 620;
   }
   randomX(min, max) {
     return Math.random() * (max - min) + min;
@@ -116,7 +118,7 @@ class GameEngine {
       this.player.x += this.speed;
     }
 
-    if (this.collisionItem()) {
+    if (this.collisionItem()|| this.collisionRoad())  {
       this.player.x = prevX;
       this.player.y = prevY;
     }
@@ -127,6 +129,19 @@ class GameEngine {
     this.collisionBorder();
 
     this.collisionBonus();
+  }
+
+
+  collisionRoad(){
+    for (let item of this.items) {
+      if (
+        this.player.x < this.maxLeft ||
+        this.player.x + this.player.getImg().width > this.maxRight
+      ) {
+        return true;
+      }
+    }
+    return false;
   }
 
   collisionItem() {
