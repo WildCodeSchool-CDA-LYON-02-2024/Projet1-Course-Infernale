@@ -158,8 +158,8 @@ class GameEngine {
     for (let bonus of this.bonus) {
       if (collision(bonus, this.player)) {
         bonus.onImpact = true;
-        const randomNum = this.randomBonus(1, 5);
-        if (randomNum > 4) {
+        const randomNum = this.randomBonus(1, 10);
+        if (randomNum > 7) {
           this.getMalus();
           this.countspeed -= 1;
         } else {
@@ -167,7 +167,7 @@ class GameEngine {
           this.countspeed += 1;
         }
         
-        console.log(this.speed);
+        console.log(randomNum);
       }
     }
   }
