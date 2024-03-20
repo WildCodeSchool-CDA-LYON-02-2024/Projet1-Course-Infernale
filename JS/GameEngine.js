@@ -14,7 +14,7 @@ class GameEngine {
     right: false,
     space: false,
   };
-  speed = 7;
+  speed = 5;
 
   constructor() {
     this.canvas = document.getElementById("game");
@@ -24,6 +24,9 @@ class GameEngine {
     this.player = new Obstacle("assets/moto.png", 500, 800);
     this.controls = new Controls();
     this.countItems = 0;
+    this.obstacleSpeed = 3;
+    this.level = document.getElementById("niveau")
+    this.currentLevel = 1;
   }
   randomX(min, max) {
     return Math.random() * (max - min) + min;
@@ -34,6 +37,7 @@ class GameEngine {
   }
   init() {
     this.initEvent();
+
     this.items = [
       new Obstacle(
         "assets/car.png",
@@ -127,6 +131,10 @@ class GameEngine {
     return false;
   }
 
+  levelUp(){
+    this.level.innerText = `Niveau ${this.currentLevel}`
+  }
+
   collisionBorder() {
     if (this.player.x < 0) {
       this.player.x = 0;
@@ -144,16 +152,20 @@ class GameEngine {
 
   obstacleMovement() {
     this.items = this.items.filter((item) => item.y < this.canvas.height);
+
     //TODO IF COLLISION    THEN GAME OVER
     for (let item of this.items) {
-      //    console.log(item.y, 'Y', this.canvas.height, 'MAX Y ');
-      // if (this.endGame()){
-      //     item.y
-      // }
-      item.y += 5;
+      item.y += this.obstacleSpeed;
     }
-  }
 
+    if (this.countItems > 5) {
+      this.obstacleSpeed += 1;
+      this.currentLevel +=1;
+      this.countItems = 0;
+    }
+
+    console.log(this.countItems);
+  }
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     for (let item of this.items) {
@@ -169,6 +181,7 @@ class GameEngine {
   // }
   gameLoop() {
     if (this.items.length === 1) {
+      this.countItems += 2;
       this.items.push(
         new Obstacle(
           "assets/car.png",
@@ -176,12 +189,13 @@ class GameEngine {
           this.randomY(-200, -400)
         ),
         new Obstacle(
-            "assets/car.png",
-            this.randomX(300, 550),
-            this.randomY(-500, -800)
-          )
+          "assets/car.png",
+          this.randomX(300, 550),
+          this.randomY(-500, -800)
+        )
       );
     }
+    this.levelUp()
     this.obstacleMovement();
 
     this.update();
@@ -199,12 +213,10 @@ class GameEngine {
     for (let item of this.items) {
       item.loaded(() => {
         count++;
-        this.countItems += 1;
         if (count === this.items.length) {
           this.gameLoop();
         }
       });
-      console.log(this.countItems);
     }
   }
 }
