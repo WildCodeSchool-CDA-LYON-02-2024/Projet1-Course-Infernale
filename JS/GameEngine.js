@@ -24,8 +24,7 @@ class GameEngine {
     this.player = new Obstacle("assets/moto.png", 500, 800);
     this.controls = new Controls();
     this.countItems = 0;
-    this.obstacleSpeed = 3;
-    this.level = document.getElementById("niveau")
+    this.obstacleSpeed = 3; // vitesse de base des obstacles
     this.currentLevel = 1;
   }
   randomX(min, max) {
@@ -134,10 +133,6 @@ class GameEngine {
     return false;
   }
 
-  levelUp(){
-    this.level.innerText = `Niveau ${this.currentLevel}`
-  }
-
   collisionBorder() {
     if (this.player.x < 0) {
       this.player.x = 0;
@@ -178,7 +173,8 @@ class GameEngine {
     
     this.ctx.font = "20px Arial";
     this.ctx.fillStyle = "white";
-    this.ctx.fillText("Score: " + this.score, 10, 30);
+    this.ctx.fillText("Score: " + this.score, 20, 30);
+    this.ctx.fillText("Niveau: " + this.currentLevel, 740, 30);
   }
   // endGame(){
   //     if (this.collisionItem()) {
@@ -202,7 +198,6 @@ class GameEngine {
         )
       );
     }
-    this.levelUp()
     this.obstacleMovement();
 
     this.update();
