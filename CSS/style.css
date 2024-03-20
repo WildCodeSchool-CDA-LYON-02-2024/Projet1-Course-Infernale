@@ -1,23 +1,52 @@
-body{
-    display: flex;
-    
-}
 canvas {
-
-    background: url("/assets/background.svg") repeat 0 0;
-    width: 1200px;
-    height: 900px;
-    animation: road 5s linear infinite;
-    box-sizing:border-box;
+  position: fixed;
+  background: url("/assets/background.svg") repeat 0 0;
+  width: 1200px;
+  height: 900px;
+  animation: road 4s linear infinite;
+  box-sizing: border-box;
 }
 
-#niveau{
-font-size: 2rem;
-font-weight: bold;
+#niveau {
+  position: relative;
+  margin-left: 60%;
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 @keyframes road {
-    from { background-position: 0 0 }
-    to {  background-position: 0 900px }
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 900px;
+  }
+}
 
+#menu {
+  position: relative;
+  width: 1200px;
+  height: 900px;
+  background-color: rgba(0, 136, 91, 0.42);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  font-family: SuperPixel, serif;
+  align-items: center;
+}
+
+#menu > h1 {
+  color: red;
+}
+
+#menu > p {
+  font-size: 1.25rem;
+}
+
+#menu > button {
+  padding: 20px;
+  background-color: red;
+  border-radius: 30%;
+  font-size: 1.7rem;
+  font-family: SuperPixel, serif;
 }
