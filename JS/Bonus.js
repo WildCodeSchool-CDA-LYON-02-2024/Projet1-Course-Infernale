@@ -1,19 +1,19 @@
-import {Obstacle} from "./Drawable.js";
+import {Obstacle} from "./Obstacle.js";
 
 class Bonus extends Obstacle {
 
     constructor(x, y) {
-        super(x, y, 'asset/police-car-siren-red.png', 'asset/police-car-siren-blue.png')
-        this.isRed = true
+        super(x, y, 'assets/bonus1.png', 'assets/bonus2.png')
+        this.isShining = true
         this.dateFrame = Date.now()
     }
 
     getImg() {
         if (this.dateFrame + 200 < Date.now()) {
-            this.isRed = !this.isRed
+            this.isShining = !this.isShining
             this.dateFrame = Date.now()
         }
-        return this.isRed ? this.images[0] : this.images[1]
+        return this.isShining ? this.images[0] : this.images[1]
     }
 }
 

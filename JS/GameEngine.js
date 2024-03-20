@@ -1,10 +1,12 @@
 import { Obstacle } from "./Obstacle.js";
 import { Controls } from "./Controls.js";
+import { Bonus } from "./Bonus.js";
 
 class GameEngine {
   canvas = null;
   ctx = null;
   items = [];
+  bonus = [];
   player = null;
 
   keys = {
@@ -23,8 +25,10 @@ class GameEngine {
     this.canvas.height = 650;
     this.player = new Obstacle(500, 800, "assets/moto.png");
     this.controls = new Controls();
-    this.countItems = 0;
+    this.countItems = 0; // compteur de voiture descendant
+    this.countBonus = 0; // compteur de bonus descendant
     this.obstacleSpeed = 3; // vitesse de base des obstacles
+    this.bonusSpeed = 4; // vitesse de base des obstacles
     this.currentLevel = 1;
   }
   randomX(min, max) {
@@ -40,13 +44,18 @@ class GameEngine {
     this.items = [
       new Obstacle(
         this.randomX(250, 350),
-        this.randomY(0, -200), "assets/car.png"
+        this.randomY(0, -200),
+        "assets/car.png"
       ),
       new Obstacle(
         this.randomX(250, 550),
-        this.randomY(0, -1000), 
+        this.randomY(0, -1000),
         "assets/car.png"
       ),
+      new Bonus(this.randomX(250, 550), this.randomY(-500, -2000)),
+    ];
+    this.bonus = [
+      new Bonus(this.randomX(250, 550), this.randomY(-500, -2000)),
     ];
   }
 
@@ -134,30 +143,34 @@ class GameEngine {
 
   collisionBorder() {
     if (this.player.x < 0) {
-        this.player.x = 0
+      this.player.x = 0;
     }
     if (this.player.y < 0) {
-        this.player.y= 0
+      this.player.y = 0;
     }
     if (this.player.x + this.player.getImg().width > this.canvas.width) {
-        this.player.x = this.canvas.width - this.player.getImg().width
+      this.player.x = this.canvas.width - this.player.getImg().width;
     }
     if (this.player.y + this.player.getImg().height > this.canvas.height) {
-        this.player.y = this.canvas.height - this.player.getImg().height
+      this.player.y = this.canvas.height - this.player.getImg().height;
     }
-}
+  }
 
   obstacleMovement() {
     this.items = this.items.filter((item) => item.y < this.canvas.height);
+    this.bonus = this.bonus.filter((item) => item.y < this.canvas.height);
 
     //TODO IF COLLISION    THEN GAME OVER
     for (let item of this.items) {
       item.y += this.obstacleSpeed;
     }
+    for (let element of this.bonus) {
+      element.y += this.bonusSpeed;
+    }
 
     if (this.countItems > 5) {
       this.obstacleSpeed += 1;
-      this.currentLevel +=1;
+      this.currentLevel += 1;
       this.countItems = 0;
     }
 
@@ -166,10 +179,13 @@ class GameEngine {
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     for (let item of this.items) {
-      this.ctx.drawImage(item.getImg(),item.x, item.y);
+      this.ctx.drawImage(item.getImg(), item.x, item.y);
+    }    
+    for (let element of this.bonus) {
+      this.ctx.drawImage(element.getImg(), element.x, element.y);
     }
     this.ctx.drawImage(this.player.getImg(), this.player.x, this.player.y);
-    
+
     this.ctx.font = "bold 25px Arial";
     this.ctx.fillStyle = "red";
     this.ctx.fillText("Score: " + this.score, 20, 30); //affichage du score sur l'écran
@@ -197,6 +213,14 @@ class GameEngine {
         )
       );
     }
+    if (this.bonus.length === 1) {
+      this.countBonus += 1;
+      this.bonus.push(
+        new Bonus(this.randomX(250, 550), this.randomY(-2000, -5000))
+        )   
+    }
+    console.log(this.bonus);
+
     this.obstacleMovement();
 
     this.update();
