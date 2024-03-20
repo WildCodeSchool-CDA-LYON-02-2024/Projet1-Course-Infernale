@@ -6,6 +6,7 @@ class Bonus extends Obstacle {
         super(x, y, 'assets/bonus1.png', 'assets/bonus2.png')
         this.isShining = true
         this.dateFrame = Date.now()
+        this.onImpact = false
     }
 
     getImg() {

@@ -1,6 +1,7 @@
 import { Obstacle } from "./Obstacle.js";
 import { Controls } from "./Controls.js";
 import { Bonus } from "./Bonus.js";
+import { collision } from "./collision.js";
 
 class GameEngine {
   canvas = null;
@@ -51,12 +52,9 @@ class GameEngine {
         this.randomX(250, 550),
         this.randomY(0, -1000),
         "assets/car.png"
-      ),
-      new Bonus(this.randomX(250, 550), this.randomY(-500, -2000)),
+      )
     ];
-    this.bonus = [
-      new Bonus(this.randomX(250, 550), this.randomY(-500, -2000)),
-    ];
+    this.bonus = [new Bonus(this.randomX(250, 550), this.randomY(-500, -2000))];
   }
 
   initEvent() {
@@ -125,6 +123,9 @@ class GameEngine {
       this.score += 1; // Augmentez le score d'une unité (vous pouvez ajuster cela selon vos besoins)
     }
     this.collisionBorder();
+
+    this.collisionBonus()
+
   }
 
   collisionItem() {
@@ -139,6 +140,14 @@ class GameEngine {
       }
     }
     return false;
+  }
+
+  collisionBonus() {
+    for (let bonus of this.bonus) {
+      if (collision(bonus, this.player)) {
+        bonus.onImpact = true;
+      }
+    }
   }
 
   collisionBorder() {
@@ -158,7 +167,7 @@ class GameEngine {
 
   obstacleMovement() {
     this.items = this.items.filter((item) => item.y < this.canvas.height);
-    this.bonus = this.bonus.filter((item) => item.y < this.canvas.height);
+    this.bonus = this.bonus.filter((bonus) => bonus.y < this.canvas.height && !bonus.onImpact);
 
     //TODO IF COLLISION    THEN GAME OVER
     for (let item of this.items) {
@@ -180,7 +189,7 @@ class GameEngine {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     for (let item of this.items) {
       this.ctx.drawImage(item.getImg(), item.x, item.y);
-    }    
+    }
     for (let element of this.bonus) {
       this.ctx.drawImage(element.getImg(), element.x, element.y);
     }
@@ -217,7 +226,7 @@ class GameEngine {
       this.countBonus += 1;
       this.bonus.push(
         new Bonus(this.randomX(250, 550), this.randomY(-2000, -5000))
-        )   
+      );
     }
     console.log(this.bonus);
 
