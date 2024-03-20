@@ -24,7 +24,7 @@ class GameEngine {
     this.player = new Obstacle("assets/moto.png", 500, 800);
     this.controls = new Controls();
     this.countItems = 0;
-    this.obstacleSpeed = 2;
+    this.obstacleSpeed = 3;
     this.level = document.getElementById("niveau")
     this.currentLevel = 1;
   }
@@ -181,7 +181,7 @@ class GameEngine {
   // }
   gameLoop() {
     if (this.items.length === 1) {
-      this.countItems += 1;
+      this.countItems += 2;
       this.items.push(
         new Obstacle(
           "assets/car.png",
