@@ -171,10 +171,10 @@ class GameEngine {
     }
     this.ctx.drawImage(this.player.getImg(), this.player.x, this.player.y);
     
-    this.ctx.font = "20px Arial";
-    this.ctx.fillStyle = "white";
-    this.ctx.fillText("Score: " + this.score, 20, 30);
-    this.ctx.fillText("Niveau: " + this.currentLevel, 740, 30);
+    this.ctx.font = "bold 25px Arial";
+    this.ctx.fillStyle = "red";
+    this.ctx.fillText("Score: " + this.score, 20, 30); //affichage du score sur l'écran
+    this.ctx.fillText("Niveau: " + this.currentLevel, 700, 30); //affichage du niveau sur l'écran
   }
   // endGame(){
   //     if (this.collisionItem()) {
