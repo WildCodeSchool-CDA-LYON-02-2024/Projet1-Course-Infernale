@@ -15,6 +15,7 @@ class Obstacle {
         this.x = x
         this.y = y
         this.index = 0
+        this.onImpact = false
     }
 
     getImg() {
