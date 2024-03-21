@@ -61,7 +61,7 @@ class GameEngine {
     document.getElementById("game").style =
       "animation: road 3s linear infinite";
     this.initEvent();
-    this.player = new Obstacle(500, 800, "assets/moto.png");
+    this.player = new Obstacle(400, 800, "assets/moto.png");
 
     this.items = [
       new Obstacle(
@@ -72,7 +72,7 @@ class GameEngine {
       new Obstacle(
         this.randomX(250, 570),
         this.randomY(0, -1000),
-        "assets/car.png"
+        "assets/car2.png"
       ),
     ];
     this.bonus = [new Bonus(this.randomX(250, 550), this.randomY(-500, -2000))];
@@ -175,7 +175,12 @@ class GameEngine {
         new Obstacle(
           this.randomX(300, 570),
           this.randomY(-500, -800),
-          "assets/car.png"
+          "assets/car2.png"
+        ),
+        new Obstacle(
+          this.randomX(300, 570),
+          this.randomY(-800, -1000),
+          "assets/car3.png"
         )
       );
     }
