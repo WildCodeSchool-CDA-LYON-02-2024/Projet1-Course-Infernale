@@ -25,8 +25,8 @@ class GameEngine {
   constructor() {
     this.canvas = document.getElementById("game");
     this.ctx = this.canvas.getContext("2d");
-    this.canvas.width = 840;
-    this.canvas.height = 650;
+    this.canvas.width = 640;
+    this.canvas.height = 827;
     this.controls = new Controls();
     this.countItems = 0;
     this.obstacleSpeed = 5;
@@ -39,8 +39,8 @@ class GameEngine {
     this.bonusSpeed = 4; // vitesse de base des obstacles
     this.countspeed = 1;
     this.currentLevel = 1;
-    this.maxLeft = 230;
-    this.maxRight = 620;
+    this.maxLeft = 50;
+    this.maxRight = 570;
   }
 
   randomX(min, max) {
@@ -65,12 +65,12 @@ class GameEngine {
 
     this.items = [
       new Obstacle(
-        this.randomX(250, 350),
+        this.randomX(50, 350),
         this.randomY(0, -200),
         "assets/car.png"
       ),
       new Obstacle(
-        this.randomX(250, 550),
+        this.randomX(250, 570),
         this.randomY(0, -1000),
         "assets/car.png"
       ),
@@ -168,12 +168,12 @@ class GameEngine {
       this.countItems += 2;
       this.items.push(
         new Obstacle(
-          this.randomX(250, 350),
+          this.randomX(50, 350),
           this.randomY(-200, -400),
           "assets/car.png"
         ),
         new Obstacle(
-          this.randomX(300, 550),
+          this.randomX(300, 570),
           this.randomY(-500, -800),
           "assets/car.png"
         )
@@ -183,7 +183,7 @@ class GameEngine {
     if (this.bonus.length === 1) {
       this.countBonus += 1;
       this.bonus.push(
-        new Bonus(this.randomX(250, 550), this.randomY(-2000, -5000))
+        new Bonus(this.randomX(50, 570), this.randomY(-2000, -5000))
       );
     }
   }

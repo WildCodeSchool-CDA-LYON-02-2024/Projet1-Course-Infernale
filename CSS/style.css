@@ -1,8 +1,8 @@
 canvas {
   position: fixed;
-  background: url("/assets/background.svg") repeat 0 0;
-  width: 1200px;
-  height: 900px;
+  background: url("/assets/road_background.jpg") repeat 0 0;
+  width: 640px;
+  height: 827px;
   animation: road 4s linear infinite;
   box-sizing: border-box;
 }
@@ -19,14 +19,14 @@ canvas {
     background-position: 0 0;
   }
   to {
-    background-position: 0 900px;
+    background-position: 0 827px;
   }
 }
 
 #menu {
   position: relative;
-  width: 1200px;
-  height: 900px;
+  width: 640px;
+  height: 827px;
   background-color: rgba(0, 136, 91, 0.42);
   display: flex;
   flex-direction: column;
