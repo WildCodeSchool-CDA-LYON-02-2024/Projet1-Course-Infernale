@@ -299,8 +299,8 @@ class GameEngine {
     this.ctx.font = "bold 20px Arial";
     this.ctx.fillStyle = "red";
     this.ctx.fillText("Score: " + this.score, 20, 30); //affichage du score sur l'écran
-    this.ctx.fillText("Niveau: " + this.currentLevel, 700, 30); //affichage du niveau sur l'écran
-    this.ctx.fillText("Vitesse: " + this.countspeed, 700, 50); //affichage
+    this.ctx.fillText("Niveau: " + this.currentLevel, 530, 30); //affichage du niveau sur l'écran
+    this.ctx.fillText("Vitesse: " + this.countspeed, 530, 60); //affichage
   }
   endGame() {
     this.obstacleSpeed = 0;
