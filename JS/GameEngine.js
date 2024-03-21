@@ -173,12 +173,12 @@ class GameEngine {
           "assets/car.png"
         ),
         new Obstacle(
-          this.randomX(300, 570),
+          this.randomX(300, 550),
           this.randomY(-500, -800),
           "assets/car2.png"
         ),
         new Obstacle(
-          this.randomX(300, 570),
+          this.randomX(100, 500),
           this.randomY(-800, -1000),
           "assets/car3.png"
         )
