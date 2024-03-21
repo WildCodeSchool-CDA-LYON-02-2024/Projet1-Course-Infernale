@@ -138,7 +138,7 @@ class GameEngine {
     if (this.collisionItem() || this.collisionRoad()) {
       this.player.x = prevX;
       this.player.y = prevY;
-
+      this.createExplosionSound()
       this.endGame();
     }
 
@@ -201,8 +201,10 @@ class GameEngine {
   collisionItem() {
     for (let item of this.items) {
       if (collision(this.player, item)) {
+        
         this.createExplosion(item);
         this.createExplosion(this.player);
+        
         item.onImpact = true;
         return true;
       }
@@ -319,6 +321,11 @@ class GameEngine {
     explosion.y = item.y - 50;
     this.explosions.push(explosion);
   }
+
+  createExplosionSound() {
+    const explosionSound = new Audio('assets/sound/explosion.flac')
+    return explosionSound.play()
+}
 
   // le boucle du jeu
   gameLoop() {
