@@ -2,6 +2,7 @@ import { Obstacle } from "./Obstacle.js";
 import { Controls } from "./Controls.js";
 import { Bonus } from "./Bonus.js";
 import { collision } from "./collision.js";
+import { Explosion } from "./explosion.js";
 
 class GameEngine {
   canvas = null;
@@ -19,6 +20,7 @@ class GameEngine {
   speed = 7;
   maxSpeed = 20;
   score = 0;
+  explosions = [];
 
   constructor() {
     this.canvas = document.getElementById("game");
@@ -136,6 +138,7 @@ class GameEngine {
     if (this.collisionItem() || this.collisionRoad()) {
       this.player.x = prevX;
       this.player.y = prevY;
+
       this.endGame();
     }
 
@@ -146,6 +149,43 @@ class GameEngine {
     this.collisionBorder();
     this.collisionBonus();
     this.collisionItem();
+
+    for (let explosion of this.explosions) {
+      if (!explosion.isFinished) {
+        explosion.currentFrameIndex++;
+
+        if (explosion.currentFrameIndex >= explosion.images.length) {
+          explosion.isFinished = true;
+        }
+      }
+    }
+
+    this.explosions = this.explosions.filter((explosion) => {
+      return !explosion.isFinished;
+    });
+
+    if (this.items.length === 1) {
+      this.countItems += 2;
+      this.items.push(
+        new Obstacle(
+          this.randomX(250, 350),
+          this.randomY(-200, -400),
+          "assets/car.png"
+        ),
+        new Obstacle(
+          this.randomX(300, 550),
+          this.randomY(-500, -800),
+          "assets/car.png"
+        )
+      );
+    }
+
+    if (this.bonus.length === 1) {
+      this.countBonus += 1;
+      this.bonus.push(
+        new Bonus(this.randomX(250, 550), this.randomY(-2000, -5000))
+      );
+    }
   }
 
   collisionRoad() {
@@ -161,6 +201,9 @@ class GameEngine {
   collisionItem() {
     for (let item of this.items) {
       if (collision(this.player, item)) {
+        this.createExplosion(item);
+        this.createExplosion(this.player);
+        item.onImpact = true;
         return true;
       }
     }
@@ -213,7 +256,9 @@ class GameEngine {
   // supprimer la voiture le moment où il a sorti de l'écrant
 
   obstacleMovement() {
-    this.items = this.items.filter((item) => item.y < this.canvas.height);
+    this.items = this.items.filter(
+      (item) => item.y < this.canvas.height && !item.onImpact
+    );
     this.bonus = this.bonus.filter(
       (bonus) => bonus.y < this.canvas.height && !bonus.onImpact
     );
@@ -247,6 +292,9 @@ class GameEngine {
       this.ctx.drawImage(element.getImg(), element.x, element.y);
     }
     this.ctx.drawImage(this.player.getImg(), this.player.x, this.player.y);
+    for (let explosion of this.explosions) {
+      this.ctx.drawImage(explosion.getImg(), explosion.x, explosion.y);
+    }
 
     this.ctx.font = "bold 20px Arial";
     this.ctx.fillStyle = "red";
@@ -265,31 +313,15 @@ class GameEngine {
     console.log("in the endgame");
   }
 
+  createExplosion(item) {
+    const explosion = new Explosion(null, null);
+    explosion.x = item.x - 100;
+    explosion.y = item.y - 50;
+    this.explosions.push(explosion);
+  }
+
   // le boucle du jeu
   gameLoop() {
-    if (this.items.length === 1) {
-      this.countItems += 2;
-      this.items.push(
-        new Obstacle(
-          this.randomX(250, 350),
-          this.randomY(-200, -400),
-          "assets/car.png"
-        ),
-        new Obstacle(
-          this.randomX(300, 550),
-          this.randomY(-500, -800),
-          "assets/car.png"
-        )
-      );
-    }
-
-    if (this.bonus.length === 1) {
-      this.countBonus += 1;
-      this.bonus.push(
-        new Bonus(this.randomX(250, 550), this.randomY(-2000, -5000))
-      );
-    }
-
     this.obstacleMovement();
     this.update();
     this.draw();
