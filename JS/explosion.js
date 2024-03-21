@@ -5,7 +5,7 @@ export class Explosion extends Obstacle {
     currentFrameIndex = 0
 
     constructor(x, y) {
-        super(x, y, 'assets/explosion_atlas.png', 'assets/explosion_atlas2.png', 'assets/explosion_atlas3.png');
+        super(x, y, 'assets/explosion_atlas.png', 'assets/explosion_atlas2.png', 'assets/explosion_atlas3.png', 'assets/explosion_atlas.png', 'assets/explosion_atlas2.png', 'assets/explosion_atlas3.png', 'assets/explosion_atlas.png', 'assets/explosion_atlas2.png', 'assets/explosion_atlas3.png');
 
         this.frame = Math.floor(Math.random() * (this.images.length - 1));
         this.refresh = 1000
