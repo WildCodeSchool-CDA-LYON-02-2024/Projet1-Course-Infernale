@@ -9,7 +9,6 @@ class GameEngine {
   items = [];
   bonus = [];
   player = null;
-
   keys = {
     up: false,
     down: false,
@@ -20,28 +19,28 @@ class GameEngine {
   speed = 7;
   maxSpeed = 20;
   score = 0;
+
   constructor() {
     this.canvas = document.getElementById("game");
     this.ctx = this.canvas.getContext("2d");
     this.canvas.width = 840;
     this.canvas.height = 650;
-    this.player = new Obstacle(500, 800, "assets/moto.png");
     this.controls = new Controls();
     this.countItems = 0;
-    this.obstacleSpeed = 3;
+    this.obstacleSpeed = 5;
     this.level = document.getElementById("niveau");
     this.currentLevel = 1;
     this.fire = new Image();
     this.fire.src = "/assets/fire_prev.png";
     this.countItems = 0; // compteur de voiture descendant
     this.countBonus = 0; // compteur de bonus descendant
-    this.obstacleSpeed = 3; // vitesse de base des obstacles
     this.bonusSpeed = 4; // vitesse de base des obstacles
     this.countspeed = 1;
     this.currentLevel = 1;
     this.maxLeft = 230;
     this.maxRight = 620;
   }
+
   randomX(min, max) {
     return Math.random() * (max - min) + min;
   }
@@ -49,8 +48,18 @@ class GameEngine {
   randomY(min, max) {
     return Math.random() * (max - min) + min;
   }
+
   init() {
+    console.log("JE SUIS DANS INIIIIT");
+    this.score = 0;
+    this.items = [];
+    this.obstacleSpeed = 5;
+    this.currentLevel = 1;
+    this.speed = 7;
+    document.getElementById("game").style =
+      "animation: road 3s linear infinite";
     this.initEvent();
+    this.player = new Obstacle(500, 800, "assets/moto.png");
 
     this.items = [
       new Obstacle(
@@ -127,38 +136,31 @@ class GameEngine {
     if (this.collisionItem() || this.collisionRoad()) {
       this.player.x = prevX;
       this.player.y = prevY;
+      this.endGame();
     }
 
     if (!this.collisionItem()) {
-      this.score += 1; // Augmentez le score d'une unité (vous pouvez ajuster cela selon vos besoins)
+      this.score += 1;
     }
-    this.collisionBorder();
 
+    this.collisionBorder();
     this.collisionBonus();
+    this.collisionItem();
   }
 
   collisionRoad() {
-    for (let item of this.items) {
-      if (
-        this.player.x < this.maxLeft ||
-        this.player.x + this.player.getImg().width > this.maxRight
-      ) {
-        return true;
-      }
+    if (
+      this.player.x < this.maxLeft ||
+      this.player.x + this.player.getImg().width > this.maxRight
+    ) {
+      return true;
     }
-    return false;
   }
 
   // collision entre la moto et les voitures
   collisionItem() {
     for (let item of this.items) {
-      if (
-        this.player.x < item.getImg().width + item.x &&
-        this.player.x + this.player.getImg().width > item.x &&
-        this.player.y < item.getImg().height + item.y &&
-        this.player.y + this.player.getImg().height > item.y
-      ) {
-        console.log("collision");
+      if (collision(this.player, item)) {
         return true;
       }
     }
@@ -194,22 +196,15 @@ class GameEngine {
           this.getBonus();
           this.countspeed += 1;
         }
-
-        console.log(randomNum);
       }
     }
   }
 
   collisionBorder() {
-    if (this.player.x < 0) {
-      this.player.x = 0;
-    }
     if (this.player.y < 0) {
       this.player.y = 0;
     }
-    if (this.player.x + this.player.getImg().width > this.canvas.width) {
-      this.player.x = this.canvas.width - this.player.getImg().width;
-    }
+
     if (this.player.y + this.player.getImg().height > this.canvas.height) {
       this.player.y = this.canvas.height - this.player.getImg().height;
     }
@@ -240,7 +235,6 @@ class GameEngine {
     if (this.obstacleSpeed > 20) {
       this.obstacleSpeed = this.maxSpeed;
     }
-    console.log(this.obstacleSpeed);
   }
 
   // creer les images sur le canvas
@@ -268,19 +262,7 @@ class GameEngine {
     document.getElementById("game").style =
       " animation: road 0s linear infinite";
     document.getElementById("startBtn").innerText = "Restart the Game";
-    const restartBtn = document.getElementById("startBtn");
-    restartBtn.addEventListener("click", () => {
-      this.score = 0;
-      this.items = [];
-      this.obstacleSpeed = 3;
-      this.currentLevel = 1;
-      this.speed = 7;
-      this.player.x = 500;
-      this.player.y = 800;
-      this.init();
-      document.getElementById("game").style =
-        "animation: road 3s linear infinite";
-    });
+    console.log("in the endgame");
   }
 
   // le boucle du jeu
@@ -310,12 +292,8 @@ class GameEngine {
 
     this.obstacleMovement();
     this.update();
-    this.collisionItem();
     this.draw();
 
-    if (this.collisionItem() === true) {
-      this.endGame();
-    }
     window.requestAnimationFrame(() => {
       this.gameLoop();
     });
