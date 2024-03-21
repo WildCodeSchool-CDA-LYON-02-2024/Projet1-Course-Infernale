@@ -1,10 +1,13 @@
 import { Obstacle } from "./Obstacle.js";
 import { Controls } from "./Controls.js";
+import { Bonus } from "./Bonus.js";
+import { collision } from "./collision.js";
 
 class GameEngine {
   canvas = null;
   ctx = null;
   items = [];
+  bonus = [];
   player = null;
 
   keys = {
@@ -15,13 +18,14 @@ class GameEngine {
     space: false,
   };
   speed = 7;
+  maxSpeed = 20;
   score = 0;
   constructor() {
     this.canvas = document.getElementById("game");
     this.ctx = this.canvas.getContext("2d");
     this.canvas.width = 840;
     this.canvas.height = 650;
-    this.player = new Obstacle("assets/moto.png", 500, 800);
+    this.player = new Obstacle(500, 800, "assets/moto.png");
     this.controls = new Controls();
     this.countItems = 0;
     this.obstacleSpeed = 3;
@@ -29,6 +33,14 @@ class GameEngine {
     this.currentLevel = 1;
     this.fire = new Image();
     this.fire.src = "/assets/fire_prev.png";
+    this.countItems = 0; // compteur de voiture descendant
+    this.countBonus = 0; // compteur de bonus descendant
+    this.obstacleSpeed = 3; // vitesse de base des obstacles
+    this.bonusSpeed = 4; // vitesse de base des obstacles
+    this.countspeed = 1;
+    this.currentLevel = 1;
+    this.maxLeft = 230;
+    this.maxRight = 620;
   }
   randomX(min, max) {
     return Math.random() * (max - min) + min;
@@ -42,16 +54,17 @@ class GameEngine {
 
     this.items = [
       new Obstacle(
-        "assets/car.png",
         this.randomX(250, 350),
-        this.randomY(0, -200)
+        this.randomY(0, -200),
+        "assets/car.png"
       ),
       new Obstacle(
-        "assets/car.png",
         this.randomX(250, 550),
-        this.randomY(0, -1000)
+        this.randomY(0, -1000),
+        "assets/car.png"
       ),
     ];
+    this.bonus = [new Bonus(this.randomX(250, 550), this.randomY(-500, -2000))];
   }
 
   initEvent() {
@@ -111,7 +124,7 @@ class GameEngine {
       this.player.x += this.speed;
     }
 
-    if (this.collisionItem()) {
+    if (this.collisionItem() || this.collisionRoad()) {
       this.player.x = prevX;
       this.player.y = prevY;
     }
@@ -120,6 +133,20 @@ class GameEngine {
       this.score += 1; // Augmentez le score d'une unité (vous pouvez ajuster cela selon vos besoins)
     }
     this.collisionBorder();
+
+    this.collisionBonus();
+  }
+
+  collisionRoad() {
+    for (let item of this.items) {
+      if (
+        this.player.x < this.maxLeft ||
+        this.player.x + this.player.getImg().width > this.maxRight
+      ) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // collision entre la moto et les voitures
@@ -143,6 +170,36 @@ class GameEngine {
   }
 
   // collision entre la moto et les murs de la route
+  getMalus() {
+    this.speed -= 1;
+  }
+
+  getBonus() {
+    this.speed += 1;
+  }
+
+  randomBonus(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  collisionBonus() {
+    for (let bonus of this.bonus) {
+      if (collision(bonus, this.player)) {
+        bonus.onImpact = true;
+        const randomNum = this.randomBonus(1, 10);
+        if (randomNum > 7) {
+          this.getMalus();
+          this.countspeed -= 1;
+        } else {
+          this.getBonus();
+          this.countspeed += 1;
+        }
+
+        console.log(randomNum);
+      }
+    }
+  }
+
   collisionBorder() {
     if (this.player.x < 0) {
       this.player.x = 0;
@@ -150,11 +207,11 @@ class GameEngine {
     if (this.player.y < 0) {
       this.player.y = 0;
     }
-    if (this.player.x + this.player.img.width > this.canvas.width) {
-      this.player.x = this.canvas.width - this.player.img.width;
+    if (this.player.x + this.player.getImg().width > this.canvas.width) {
+      this.player.x = this.canvas.width - this.player.getImg().width;
     }
-    if (this.player.y + this.player.img.height > this.canvas.height) {
-      this.player.y = this.canvas.height - this.player.img.height;
+    if (this.player.y + this.player.getImg().height > this.canvas.height) {
+      this.player.y = this.canvas.height - this.player.getImg().height;
     }
   }
 
@@ -162,10 +219,16 @@ class GameEngine {
 
   obstacleMovement() {
     this.items = this.items.filter((item) => item.y < this.canvas.height);
+    this.bonus = this.bonus.filter(
+      (bonus) => bonus.y < this.canvas.height && !bonus.onImpact
+    );
 
     //TODO IF COLLISION
     for (let item of this.items) {
       item.y += this.obstacleSpeed;
+    }
+    for (let element of this.bonus) {
+      element.y += this.bonusSpeed;
     }
 
     if (this.countItems > 5) {
@@ -173,6 +236,11 @@ class GameEngine {
       this.currentLevel += 1;
       this.countItems = 0;
     }
+
+    if (this.obstacleSpeed > 20) {
+      this.obstacleSpeed = this.maxSpeed;
+    }
+    console.log(this.obstacleSpeed);
   }
 
   // creer les images sur le canvas
@@ -181,11 +249,16 @@ class GameEngine {
     for (let item of this.items) {
       this.ctx.drawImage(item.getImg(), item.x, item.y);
     }
+    for (let element of this.bonus) {
+      this.ctx.drawImage(element.getImg(), element.x, element.y);
+    }
     this.ctx.drawImage(this.player.getImg(), this.player.x, this.player.y);
 
-    this.ctx.font = "20px Arial";
-    this.ctx.fillStyle = "white";
-    this.ctx.fillText("Score: " + this.score, 10, 30);
+    this.ctx.font = "bold 20px Arial";
+    this.ctx.fillStyle = "red";
+    this.ctx.fillText("Score: " + this.score, 20, 30); //affichage du score sur l'écran
+    this.ctx.fillText("Niveau: " + this.currentLevel, 700, 30); //affichage du niveau sur l'écran
+    this.ctx.fillText("Vitesse: " + this.countspeed, 700, 50); //affichage
   }
   endGame() {
     this.obstacleSpeed = 0;
@@ -216,18 +289,25 @@ class GameEngine {
       this.countItems += 2;
       this.items.push(
         new Obstacle(
-          "assets/car.png",
           this.randomX(250, 350),
-          this.randomY(-200, -400)
+          this.randomY(-200, -400),
+          "assets/car.png"
         ),
         new Obstacle(
-          "assets/car.png",
           this.randomX(300, 550),
-          this.randomY(-500, -800)
+          this.randomY(-500, -800),
+          "assets/car.png"
         )
       );
     }
-    this.levelUp();
+
+    if (this.bonus.length === 1) {
+      this.countBonus += 1;
+      this.bonus.push(
+        new Bonus(this.randomX(250, 550), this.randomY(-2000, -5000))
+      );
+    }
+
     this.obstacleMovement();
     this.update();
     this.collisionItem();
