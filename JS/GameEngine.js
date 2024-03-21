@@ -27,6 +27,8 @@ class GameEngine {
     this.obstacleSpeed = 3;
     this.level = document.getElementById("niveau");
     this.currentLevel = 1;
+    this.fire = new Image();
+    this.fire.src = "/assets/fire_prev.png";
   }
   randomX(min, max) {
     return Math.random() * (max - min) + min;
@@ -130,7 +132,6 @@ class GameEngine {
         this.player.y + this.player.getImg().height > item.y
       ) {
         console.log("collision");
-
         return true;
       }
     }
@@ -162,7 +163,7 @@ class GameEngine {
   obstacleMovement() {
     this.items = this.items.filter((item) => item.y < this.canvas.height);
 
-    //TODO IF COLLISION    THEN GAME OVER
+    //TODO IF COLLISION
     for (let item of this.items) {
       item.y += this.obstacleSpeed;
     }
@@ -173,6 +174,8 @@ class GameEngine {
       this.countItems = 0;
     }
   }
+
+  // creer les images sur le canvas
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     for (let item of this.items) {
@@ -185,16 +188,29 @@ class GameEngine {
     this.ctx.fillText("Score: " + this.score, 10, 30);
   }
   endGame() {
-    if (this.collisionItem() === true) {
-      document.getElementById("titleMenu").innerText = "GAME OVER";
-      document.getElementById("contentMenu").innerText = "Vous avez gagné !!!";
-      document.getElementById("startBtn").innerText = "Restart the Game";
-      document.getElementById("menu").style = "display: flex";
-      this.obstacleSpeed = 0;
+    this.obstacleSpeed = 0;
+    document.getElementById("titleMenu").innerText = "GAME OVER";
+    document.getElementById("contentMenu").innerText = "Vous avez gagné !!!";
+    document.getElementById("menu").style = "display: flex";
+    document.getElementById("game").style =
+      " animation: road 0s linear infinite";
+    document.getElementById("startBtn").innerText = "Restart the Game";
+    const restartBtn = document.getElementById("startBtn");
+    restartBtn.addEventListener("click", () => {
+      this.score = 0;
+      this.items = [];
+      this.obstacleSpeed = 3;
+      this.currentLevel = 1;
+      this.speed = 7;
+      this.player.x = 500;
+      this.player.y = 800;
+      this.init();
       document.getElementById("game").style =
-        " animation: road 0s linear infinite;";
-    }
+        "animation: road 3s linear infinite";
+    });
   }
+
+  // le boucle du jeu
   gameLoop() {
     if (this.items.length === 1) {
       this.countItems += 2;
@@ -213,16 +229,19 @@ class GameEngine {
     }
     this.levelUp();
     this.obstacleMovement();
-
     this.update();
     this.collisionItem();
     this.draw();
+
+    if (this.collisionItem() === true) {
+      this.endGame();
+    }
     window.requestAnimationFrame(() => {
       this.gameLoop();
-      this.endGame();
     });
   }
 
+  // démarage du jeu
   run() {
     this.init();
     let count = 0;
