@@ -58,6 +58,8 @@ class GameEngine {
     this.obstacleSpeed = 5;
     this.currentLevel = 1;
     this.speed = 7;
+    this.stopMenuMusic();
+    this.backgroundMusic();
     document.getElementById("game").style =
       "animation: road 3s linear infinite";
     this.initEvent();
@@ -138,7 +140,7 @@ class GameEngine {
     if (this.collisionItem() || this.collisionRoad()) {
       this.player.x = prevX;
       this.player.y = prevY;
-      this.createExplosionSound()
+      this.createExplosionSound();
       this.endGame();
     }
 
@@ -206,11 +208,10 @@ class GameEngine {
   collisionItem() {
     for (let item of this.items) {
       if (collision(this.player, item)) {
-        
         this.createExplosion(item);
         this.createExplosion(this.player);
-        
         item.onImpact = true;
+        this.stopBackgroundMusic();
         return true;
       }
     }
@@ -270,7 +271,6 @@ class GameEngine {
       (bonus) => bonus.y < this.canvas.height && !bonus.onImpact
     );
 
-    //TODO IF COLLISION
     for (let item of this.items) {
       item.y += this.obstacleSpeed;
     }
@@ -310,6 +310,7 @@ class GameEngine {
     this.ctx.fillText("Vitesse: " + this.countspeed, 530, 60); //affichage
   }
   endGame() {
+    this.menuMusic()
     this.obstacleSpeed = 0;
     document.getElementById("titleMenu").innerText = "GAME OVER";
     document.getElementById("contentMenu").innerText = "Vous avez gagné !!!";
@@ -328,9 +329,40 @@ class GameEngine {
   }
 
   createExplosionSound() {
-    const explosionSound = new Audio('assets/sound/explosion.flac')
-    return explosionSound.play()
-}
+    const explosionSound = new Audio("assets/sound/explosion.flac");
+    return explosionSound.play();
+  }
+
+  raceStart() {
+    const raceStart = new Audio("assets/sound/raceStart.mp3");
+    return raceStart.play();
+  }
+
+  backgroundMusic() {
+    const backgroundMusic = document.getElementById("backgroundMusic");
+    backgroundMusic.loop = true;
+    backgroundMusic.play();
+  }
+
+  stopBackgroundMusic() {
+    const backgroundMusic = document.getElementById("backgroundMusic");
+    if (backgroundMusic) {
+      backgroundMusic.pause();
+    }
+  }
+
+  menuMusic() {
+    const menuMusic = document.getElementById("menuMusic");
+    menuMusic.loop = true;
+    menuMusic.play();
+  }
+
+  stopMenuMusic() {
+    const menuMusic = document.getElementById("menuMusic");
+    if (menuMusic) {
+      menuMusic.pause();
+    }
+  }
 
   // le boucle du jeu
   gameLoop() {
