@@ -6,6 +6,11 @@ canvas {
   animation: road 4s linear infinite;
   box-sizing: border-box;
 }
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 #niveau {
   position: relative;
