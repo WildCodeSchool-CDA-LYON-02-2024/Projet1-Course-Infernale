@@ -32,8 +32,6 @@ class GameEngine {
     this.obstacleSpeed = 5;
     this.level = document.getElementById("niveau");
     this.currentLevel = 1;
-    this.fire = new Image();
-    this.fire.src = "/assets/fire_prev.png";
     this.countItems = 0; // compteur de voiture descendant
     this.countBonus = 0; // compteur de bonus descendant
     this.bonusSpeed = 4; // vitesse de base des obstacles
