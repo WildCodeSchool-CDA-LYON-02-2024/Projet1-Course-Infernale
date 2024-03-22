@@ -52,7 +52,6 @@ class GameEngine {
   }
 
   init() {
-    console.log("JE SUIS DANS INIIIIT");
     this.score = 0;
     this.items = [];
     this.obstacleSpeed = 5;
@@ -137,7 +136,7 @@ class GameEngine {
       this.player.x += this.speed;
     }
 
-    if (this.collisionItem() || this.collisionRoad()) {
+    if (this.collisionItem()) {
       this.player.x = prevX;
       this.player.y = prevY;
       this.createExplosionSound();
@@ -195,14 +194,7 @@ class GameEngine {
     }
   }
 
-  collisionRoad() {
-    if (
-      this.player.x < this.maxLeft ||
-      this.player.x + this.player.getImg().width > this.maxRight
-    ) {
-      return true;
-    }
-  }
+
 
   // collision entre la moto et les voitures
   collisionItem() {
@@ -216,10 +208,6 @@ class GameEngine {
       }
     }
     return false;
-  }
-
-  levelUp() {
-    this.level.innerText = `Niveau ${this.currentLevel}`;
   }
 
   // collision entre la moto et les murs de la route
@@ -255,12 +243,25 @@ class GameEngine {
     if (this.player.y < 0) {
       this.player.y = 0;
     }
-
     if (this.player.y + this.player.getImg().height > this.canvas.height) {
       this.player.y = this.canvas.height - this.player.getImg().height;
     }
+    if(this.player.x < this.maxLeft){
+      this.player.x = this.maxLeft
+    }
+    if(this.player.x + this.player.getImg().width > this.maxRight){
+      this.player.x  = this.maxRight - this.player.getImg().width
+    }
   }
 
+  // collisionRoad() {
+  //   if (
+  //     this.player.x < this.maxLeft ||
+  //     this.player.x + this.player.getImg().width > this.maxRight
+  //   ) {
+  //     return true;
+  //   }
+  // }
   // supprimer la voiture le moment où il a sorti de l'écrant
 
   obstacleMovement() {
@@ -318,7 +319,6 @@ class GameEngine {
     document.getElementById("game").style =
       " animation: road 0s linear infinite";
     document.getElementById("startBtn").innerText = "Restart the Game";
-    console.log("in the endgame");
   }
 
   createExplosion(item) {
