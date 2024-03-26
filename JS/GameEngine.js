@@ -39,6 +39,7 @@ class GameEngine {
     this.currentLevel = 1;
     this.maxLeft = 50;
     this.maxRight = 570;
+    this.timeLeft = 3;
   }
 
   randomX(min, max) {
@@ -50,11 +51,13 @@ class GameEngine {
   }
 
   init() {
+    this.countdown();
     this.score = 0;
     this.items = [];
     this.obstacleSpeed = 5;
     this.currentLevel = 1;
     this.speed = 7;
+
     this.stopMenuMusic();
     this.backgroundMusic();
     document.getElementById("game").style =
@@ -192,8 +195,6 @@ class GameEngine {
     }
   }
 
-
-
   // collision entre la moto et les voitures
   collisionItem() {
     for (let item of this.items) {
@@ -244,23 +245,13 @@ class GameEngine {
     if (this.player.y + this.player.getImg().height > this.canvas.height) {
       this.player.y = this.canvas.height - this.player.getImg().height;
     }
-    if(this.player.x < this.maxLeft){
-      this.player.x = this.maxLeft
+    if (this.player.x < this.maxLeft) {
+      this.player.x = this.maxLeft;
     }
-    if(this.player.x + this.player.getImg().width > this.maxRight){
-      this.player.x  = this.maxRight - this.player.getImg().width
+    if (this.player.x + this.player.getImg().width > this.maxRight) {
+      this.player.x = this.maxRight - this.player.getImg().width;
     }
   }
-
-  // collisionRoad() {
-  //   if (
-  //     this.player.x < this.maxLeft ||
-  //     this.player.x + this.player.getImg().width > this.maxRight
-  //   ) {
-  //     return true;
-  //   }
-  // }
-  // supprimer la voiture le moment où il a sorti de l'écrant
 
   obstacleMovement() {
     this.items = this.items.filter(
@@ -309,7 +300,8 @@ class GameEngine {
     this.ctx.fillText("Vitesse: " + this.countspeed, 530, 60); //affichage
   }
   endGame() {
-    this.menuMusic()
+    this.menuMusic();
+    this.score = this.score;
     this.obstacleSpeed = 0;
     document.getElementById("titleMenu").innerText = "GAME OVER";
     document.getElementById("contentMenu").innerText = "Vous avez gagné !!!";
@@ -359,6 +351,30 @@ class GameEngine {
     const menuMusic = document.getElementById("menuMusic");
     if (menuMusic) {
       menuMusic.pause();
+    }
+  }
+
+  countdown() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    if (this.timeLeft > 0) {
+      this.ctx.font = "bold 80px Arial";
+      this.ctx.fillStyle = "red";
+      const text = this.timeLeft.toString();
+      const textWidth = this.ctx.measureText(text).width;
+      const x = (this.canvas.width - textWidth) / 2;
+      const y = this.canvas.height / 2;
+      this.ctx.fillText(text, x, y);
+      this.timeLeft--;
+      this.countdownTimeout = setTimeout(() => {
+        this.countdown();
+      }, 1000);
+    } else {
+      const textWidth = this.ctx.measureText("START !!!!").width;
+      const x = (this.canvas.width - textWidth) / 2;
+      const y = this.canvas.height / 2;
+      this.ctx.font = "bold 50px superpixel";
+      this.ctx.fillText("START !!!!", x, y);
     }
   }
 
