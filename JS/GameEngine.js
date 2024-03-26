@@ -21,7 +21,6 @@ class GameEngine {
   maxSpeed = 20;
   score = 0;
   explosions = [];
-  scoreInterval = null;
 
   constructor() {
     this.canvas = document.getElementById("game");
@@ -41,7 +40,7 @@ class GameEngine {
     this.maxLeft = 50;
     this.maxRight = 570;
     this.timeLeft = 3;
-    this.isGameOver = false
+    this.isGameOver = false;
   }
 
   randomX(min, max) {
@@ -79,8 +78,7 @@ class GameEngine {
       ),
     ];
     this.bonus = [new Bonus(this.randomX(250, 550), this.randomY(-500, -2000))];
-    this.isGameOver = false
-    
+    this.isGameOver = false;
   }
 
   initEvent() {
@@ -123,7 +121,6 @@ class GameEngine {
     });
   }
 
-
   update() {
     let prevX = this.player.x;
     let prevY = this.player.y;
@@ -145,7 +142,7 @@ class GameEngine {
       this.player.x = prevX;
       this.player.y = prevY;
       this.createExplosionSound();
-      this.isGameOver = true
+      this.isGameOver = true;
       this.endGame();
     }
 
@@ -199,9 +196,9 @@ class GameEngine {
       );
     }
   }
-clear(){
-  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-}
+  clear() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
   // collision entre la moto et les voitures
   collisionItem() {
     for (let item of this.items) {
@@ -373,7 +370,7 @@ clear(){
       const y = this.canvas.height / 2;
       this.ctx.fillText(text, x, y);
       this.timeLeft--;
-      this.countdownTimeout = setTimeout(() => {
+      setTimeout(() => {
         this.countdown();
       }, 1000);
     } else {
@@ -387,7 +384,7 @@ clear(){
 
   // le boucle du jeu
   gameLoop() {
-    if(!this.isGameOver){
+    if (!this.isGameOver) {
       this.obstacleMovement();
       this.update();
       this.draw();
