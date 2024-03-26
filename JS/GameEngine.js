@@ -21,6 +21,7 @@ class GameEngine {
   maxSpeed = 20;
   score = 0;
   explosions = [];
+  scoreInterval = null;
 
   constructor() {
     this.canvas = document.getElementById("game");
@@ -40,6 +41,7 @@ class GameEngine {
     this.maxLeft = 50;
     this.maxRight = 570;
     this.timeLeft = 3;
+    this.isGameOver = false
   }
 
   randomX(min, max) {
@@ -51,7 +53,6 @@ class GameEngine {
   }
 
   init() {
-    this.countdown();
     this.score = 0;
     this.items = [];
     this.obstacleSpeed = 5;
@@ -78,6 +79,8 @@ class GameEngine {
       ),
     ];
     this.bonus = [new Bonus(this.randomX(250, 550), this.randomY(-500, -2000))];
+    this.isGameOver = false
+    
   }
 
   initEvent() {
@@ -120,6 +123,7 @@ class GameEngine {
     });
   }
 
+
   update() {
     let prevX = this.player.x;
     let prevY = this.player.y;
@@ -141,6 +145,7 @@ class GameEngine {
       this.player.x = prevX;
       this.player.y = prevY;
       this.createExplosionSound();
+      this.isGameOver = true
       this.endGame();
     }
 
@@ -194,7 +199,9 @@ class GameEngine {
       );
     }
   }
-
+clear(){
+  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+}
   // collision entre la moto et les voitures
   collisionItem() {
     for (let item of this.items) {
@@ -281,7 +288,7 @@ class GameEngine {
 
   // creer les images sur le canvas
   draw() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.clear();
     for (let item of this.items) {
       this.ctx.drawImage(item.getImg(), item.x, item.y);
     }
@@ -301,7 +308,7 @@ class GameEngine {
   }
   endGame() {
     this.menuMusic();
-    this.score = this.score;
+    this.bonusSpeed = 0;
     this.obstacleSpeed = 0;
     document.getElementById("titleMenu").innerText = "GAME OVER";
     document.getElementById("contentMenu").innerText = "Vous avez gagné !!!";
@@ -355,7 +362,7 @@ class GameEngine {
   }
 
   countdown() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.clear();
 
     if (this.timeLeft > 0) {
       this.ctx.font = "bold 80px Arial";
@@ -380,10 +387,11 @@ class GameEngine {
 
   // le boucle du jeu
   gameLoop() {
-    this.obstacleMovement();
-    this.update();
-    this.draw();
-
+    if(!this.isGameOver){
+      this.obstacleMovement();
+      this.update();
+      this.draw();
+    }
     window.requestAnimationFrame(() => {
       this.gameLoop();
     });
