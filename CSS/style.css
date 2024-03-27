@@ -11,7 +11,41 @@ body{
 
   justify-content: center;
 }
+.left{
+  display: flex;
+  justify-content: center;
+  width: 200px;
+}
 
+.right{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 200px;
+  text-align: center;
+  gap: 2rem;
+}
+#bonusContainer{
+width: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.star{
+  width: 20px;
+}
+#bonus{
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+width: 80%
+;
+}
+#keypad{
+  width: 70%;
+  height: 50%;
+}
 #niveau {
   position: relative;
   margin-left: 60%;
@@ -54,10 +88,15 @@ body{
   font-size: 1.25rem;
 }
 
-#menu > button {
+#startBtn {
   padding: 20px;
-  background-color: red;
+  background-color: transparent;
+  border: none;
   border-radius: 30%;
   font-size: 1.7rem;
   font-family: SuperPixel, serif;
+  cursor: pointer;
 }
+
+
+

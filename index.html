@@ -8,7 +8,9 @@
     <title>Course Infernale</title>
   </head>
   <body>
+    <div class="left">left</div>
     <canvas id="game"></canvas>
+
 
     <audio id="backgroundMusic" src="assets/sound/background.mp3"></audio>
     <audio id="menuMusic" src="assets/sound/menu.mp3"></audio>
@@ -16,8 +18,21 @@
     <div id="menu">
       <h1 id="titleMenu">la course Infernale</h1>
       <p id="contentMenu">let's Race</p>
-      <button id="startBtn">Start the Game</button>
+      <button id="startBtn">Start</button>
     </div>
-    <div id="timer"></div>
+    <div class="right">right
+      <div>
+      <p>Use arrow keys on your keyboard to move</p>
+      <img id="keypad" src="./assets/keypad.jpg" alt="keypad" >
+    </div>
+    <div id="bonusContainer">
+      <p><span><img class="star" src="./assets/star.png"></span>Bonus<span><img class="star" src="./assets/star.png"></span></p>
+      <div id="bonus">
+      <p>Speed +1 (70% chance)</p>
+      <p>Speed -1 (30% chance)</p>
+    </div>
+    </div>
+      
+    </div>
   </body>
 </html>

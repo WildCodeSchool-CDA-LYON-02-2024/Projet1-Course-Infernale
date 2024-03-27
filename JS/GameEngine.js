@@ -302,13 +302,16 @@ class GameEngine {
     this.ctx.fillText("Score: " + this.score, 20, 30); //affichage du score sur l'écran
     this.ctx.fillText("Niveau: " + this.currentLevel, 530, 30); //affichage du niveau sur l'écran
     this.ctx.fillText("Vitesse: " + this.countspeed, 530, 60); //affichage
+    console.log( this.score);
   }
+  
   endGame() {
     this.menuMusic();
     this.bonusSpeed = 0;
     this.obstacleSpeed = 0;
+    console.log( this.score)
     document.getElementById("titleMenu").innerText = "GAME OVER";
-    document.getElementById("contentMenu").innerText = "Vous avez gagné !!!";
+    document.getElementById("contentMenu").innerText = `Score de la partie : ${this.score}`;
     document.getElementById("menu").style = "display: flex";
     document.getElementById("game").style =
       " animation: road 0s linear infinite";

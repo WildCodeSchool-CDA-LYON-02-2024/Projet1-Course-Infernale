@@ -7,8 +7,7 @@ game.menuMusic(),
     game.stopMenuMusic();
     game.raceStart();
     game.timeLeft = 3;
-    setTimeout(game.countdown(), 1000);
-
+    setTimeout(() => game.countdown(), 1000);
     setTimeout(() => (game.player !== null ? game.init() : game.run()), 4000);
 
   });
