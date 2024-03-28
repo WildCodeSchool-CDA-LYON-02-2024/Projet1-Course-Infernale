@@ -8,7 +8,10 @@
     <title>Course Infernale</title>
   </head>
   <body>
-    <div class="left">left</div>
+    <video autoplay muted loop id="myVideo">
+      <source src="./assets/background5.mp4" type="video/mp4">
+    </video>
+    <div class="left"></div>
     <canvas id="game"></canvas>
 
     <audio id="backgroundMusic" src="assets/sound/background.mp3"></audio>
@@ -27,22 +30,20 @@
       </button>
     </div>
     <div class="right">
-      right
+
       <div>
-        <p>Use arrow keys on your keyboard to move</p>
-        <img id="keypad" src="./assets/keypad.jpg" alt="keypad" />
-      </div>
-      <div id="bonusContainer">
-        <p>
-          <span><img class="star" src="./assets/star.png" /></span>Bonus<span
-            ><img class="star" src="./assets/star.png"
-          /></span>
-        </p>
-        <div id="bonus">
-          <p>Speed +1 (70% chance)</p>
-          <p>Speed -1 (30% chance)</p>
-        </div>
-      </div>
+      <p>Use arrow keys on your keyboard to move</p>
+      <img id="keypad" src="./assets/keypad.png" alt="keypad" >
+    </div>
+    <div id="bonusContainer">
+      <p><span><img class="star" src="./assets/star.png"></span>Bonus<span><img class="star" src="./assets/star.png"></span></p>
+      <div id="bonus">
+      <p>Speed +1 (70% chance)</p>
+      <p>Speed -1 (30% chance)</p>
+    </div>
+    </div>
+      
+
     </div>
   </body>
 </html>
