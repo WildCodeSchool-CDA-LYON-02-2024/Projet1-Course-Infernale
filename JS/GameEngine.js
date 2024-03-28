@@ -219,7 +219,7 @@ class GameEngine {
   }
 
   getBonus() {
-    this.speed += 1;
+    this.speed += 2;
   }
 
   randomBonus(min, max) {
@@ -273,7 +273,7 @@ class GameEngine {
     }
 
     if (this.countItems > 5) {
-      this.obstacleSpeed += 1;
+      this.obstacleSpeed += 3;
       this.currentLevel += 1;
       this.countItems = 0;
     }
@@ -296,24 +296,26 @@ class GameEngine {
     // for (let explosion of this.explosions) {
     //   this.ctx.drawImage(explosion.getImg(), explosion.x, explosion.y);
     // }
-    // hsl(210, 100%, 50%)
+
     this.ctx.font = "bold 30px Arial";
     this.ctx.fillStyle = "black";
-    this.ctx.strokeStyle  = "hsl(210, 100%, 50%)";
+    this.ctx.strokeStyle = "hsl(210, 100%, 50%)";
     this.ctx.lineWidth = 8;
     this.ctx.fillText("Score: " + this.score, 20, 30); //affichage du score sur l'écran
     this.ctx.fillText("Niveau: " + this.currentLevel, 480, 30); //affichage du niveau sur l'écran
     this.ctx.fillText("Vitesse: " + this.countspeed, 480, 60); //affichage
-    console.log( this.score);
+    console.log(this.score);
   }
-  
+
   endGame() {
     this.menuMusic();
     this.bonusSpeed = 0;
     this.obstacleSpeed = 0;
-    console.log( this.score)
+    console.log(this.score);
     document.getElementById("titleMenu").innerText = "GAME OVER";
-    document.getElementById("contentMenu").innerText = `Score de la partie : ${this.score}`;
+    document.getElementById(
+      "contentMenu"
+    ).innerText = `Score de la partie : ${this.score}`;
     document.getElementById("menu").style = "display: flex";
     document.getElementById("game").style =
       " animation: road 0s linear infinite";
