@@ -296,12 +296,14 @@ class GameEngine {
     for (let explosion of this.explosions) {
       this.ctx.drawImage(explosion.getImg(), explosion.x, explosion.y);
     }
-
-    this.ctx.font = "bold 20px Arial";
-    this.ctx.fillStyle = "red";
+    // hsl(210, 100%, 50%)
+    this.ctx.font = "bold 30px Arial";
+    this.ctx.fillStyle = "black";
+    this.ctx.strokeStyle  = "hsl(210, 100%, 50%)";
+    this.ctx.lineWidth = 8;
     this.ctx.fillText("Score: " + this.score, 20, 30); //affichage du score sur l'écran
-    this.ctx.fillText("Niveau: " + this.currentLevel, 530, 30); //affichage du niveau sur l'écran
-    this.ctx.fillText("Vitesse: " + this.countspeed, 530, 60); //affichage
+    this.ctx.fillText("Niveau: " + this.currentLevel, 480, 30); //affichage du niveau sur l'écran
+    this.ctx.fillText("Vitesse: " + this.countspeed, 480, 60); //affichage
     console.log( this.score);
   }
   
