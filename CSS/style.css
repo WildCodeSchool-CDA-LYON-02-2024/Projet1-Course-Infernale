@@ -104,6 +104,12 @@ padding-bottom: 5rem;
   align-items: center;
 }
 
+#contentMenu{
+  color: var(--glow-color);
+  font-family: "Titan One", sans-serif;
+  font-size: 1.5rem;
+}
+
 #menu > h1 {
   color: red;
 }

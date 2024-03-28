@@ -293,9 +293,9 @@ class GameEngine {
       this.ctx.drawImage(element.getImg(), element.x, element.y);
     }
     this.ctx.drawImage(this.player.getImg(), this.player.x, this.player.y);
-    for (let explosion of this.explosions) {
-      this.ctx.drawImage(explosion.getImg(), explosion.x, explosion.y);
-    }
+    // for (let explosion of this.explosions) {
+    //   this.ctx.drawImage(explosion.getImg(), explosion.x, explosion.y);
+    // }
     // hsl(210, 100%, 50%)
     this.ctx.font = "bold 30px Arial";
     this.ctx.fillStyle = "black";
