@@ -14,13 +14,15 @@
     <div class="left"></div>
     <canvas id="game"></canvas>
 
-
     <audio id="backgroundMusic" src="assets/sound/background.mp3"></audio>
     <audio id="menuMusic" src="assets/sound/menu.mp3"></audio>
 
     <div id="menu">
-      <h1 id="titleMenu">la course Infernale</h1>
-      <p id="contentMenu">let's Race</p>
+      <div class="text-wrapper">
+        <h1 id="titleMenu">la course Infernale</h1>
+        <span id="contentMenu">let's Race</span>
+      </div>
+
       <button id="startBtn">
         <span class="glowing-txt"
           >START<span class="faulty-letter"> THE</span> RACE</span
@@ -28,6 +30,7 @@
       </button>
     </div>
     <div class="right">
+
       <div>
       <p>Use arrow keys on your keyboard to move</p>
       <img id="keypad" src="./assets/keypad.png" alt="keypad" >
@@ -40,6 +43,7 @@
     </div>
     </div>
       
+
     </div>
   </body>
 </html>
